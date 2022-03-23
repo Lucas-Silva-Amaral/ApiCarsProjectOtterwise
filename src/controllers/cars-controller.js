@@ -1,0 +1,78 @@
+import { prisma } from "../helpers/utils.js"
+
+export const index = async (_, reply) => {
+  try {
+    const cars = await prisma.car.findMany()
+    return reply.send(cars)
+  } catch (error) {
+    console.error(error)
+    return reply.status(500).send(error)
+  }
+}
+
+export const create = async (req, reply) => {
+  const { name, year, brand_id } = req.body
+
+  try {
+    const car = await prisma.car.create({
+      data: {
+        name: name,
+        year: year,
+        brand: { connect: { id: parseInt(brand_id) } },
+        image_url: req.file.path,
+      },
+    })
+
+    return reply.status(201).send(car)
+  } catch (error) {
+    reply.status(500).send(error)
+  }
+}
+
+export const update = async (req, reply) => {
+  const { id } = req.params
+
+  let data = {}
+
+  if (req.body.name) {
+    data.name = req.body.name
+  }
+
+  if (req.body.year) {
+    data.year = req.body.year
+  }
+
+  if (req.body.brand_id) {
+    data.brand_id = parseInt(req.body.brand_id)
+  }
+
+  if (req.file) {
+    data.image_url = req.file.path
+  }
+
+  try {
+    const car = await prisma.car.update({
+      where: { id: parseInt(id) },
+      data: data,
+    })
+
+    return reply.status(200).send(car)
+  } catch (error) {
+    console.error(error)
+    reply.status(500).send(error)
+  }
+}
+
+export const remove = async (req, reply) => {
+  const { id } = req.params
+  try {
+    const car = await prisma.car.delete({
+      where: { id: parseInt(id) },
+    })
+
+    return reply.status(200).send(car)
+  } catch (error) {
+    console.error(error)
+    reply.status(500).send(error)
+  }
+}

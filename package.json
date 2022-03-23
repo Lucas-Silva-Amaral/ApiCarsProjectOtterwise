@@ -1,0 +1,22 @@
+{
+  "name": "projeto-semana",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "prisma": "^3.11.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.11.0",
+    "fastify": "^3.27.4",
+    "fastify-cors": "^6.0.3",
+    "fastify-helmet": "^7.0.1",
+    "fastify-multer": "^2.0.2",
+    "fastify-static": "^4.6.1"
+  }
+}
